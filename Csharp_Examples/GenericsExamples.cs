@@ -1,13 +1,17 @@
 ﻿using System;
+
 namespace Csharp_Examples
 {
+    using extension_test;
     public static class GenericsExamples
     {
+            
         public static void RunTests()
         {
             // Call service, dal, etc..
             ResultInt result = new ResultInt { Success = true, Data = 5 };
             ResultString result2 = new ResultString { Success = false, Data = "Failure" };
+            Result<string> result3 = new Result<string> { Success = false, Data = "Success" };
 
             //Console.WriteLine(result.GetResults());
             //Console.WriteLine(result2.GetResults());
@@ -17,12 +21,14 @@ namespace Csharp_Examples
             DataWrapper<ResultString> dw = new DataWrapper<ResultString>(result2);
             dw.InvokeGeneric();
 
-            DataFactory.CreateComponent<ResultString>(true, "Mikey");
-            result.GetComponent<ResultInt>();
-            result2.GetComponent<ResultString>();
+            DataFactory.CreateGeneric<ResultString>(true, "Mikey");
+            DataFactory.PrintGeneric("some","value");
+            DataFactory.PrintGeneric("number", 3);
+            //With Extensions
+            result.PrintComponent<ResultInt>();
+            result2.PrintComponent<ResultString>();
         }
     }
-
 
     //----------------Using Interfaces
     public interface IResultable
@@ -55,10 +61,7 @@ namespace Csharp_Examples
         public bool Success { get; set; }
         public string Data { get; set; }
 
-        public ResultString()
-        {
-
-        }
+        public ResultString() { }
 
         public ResultString(bool val, string data)
         {
@@ -74,7 +77,20 @@ namespace Csharp_Examples
     }
 
 
-    //----------------Generic Wrapper for Tests
+    //----------------Generic Property
+    public class Result<Z>
+    {
+        public bool Success { get; set; }
+        public Z Data { get; set; }
+
+        public string GetResults()
+        {
+            return "Success: " + Success.ToString() +
+                    "  Data: " + Data.ToString();
+        }
+    }
+
+    //----------------Generic Wrapper for Tests----------------//
     public class DataWrapper<T>
     {
         T instanceVariable;
@@ -99,18 +115,31 @@ namespace Csharp_Examples
 
     public static class DataFactory
     {
-        public static void CreateComponent<X>(bool value, string data)
+        public static void CreateGeneric<X>(bool value, string data)
         {
             var sample = typeof(X);
             object instance = Activator.CreateInstance(sample, new object[] { value, data });
             Console.WriteLine(sample.GetMethod("GetResults").Invoke(instance, null));
         }
 
-        //Extension Type
-        public static void GetComponent<Y>(this object obj)
+        public static void PrintGeneric<X>(string input,X something)
         {
-            Y sample = (Y)obj;
-            Console.WriteLine(sample.GetType().GetMethod("GetResults").Invoke(sample, null));
+            Console.WriteLine(input + " " + something + " as a generic.");
+        }
+    }
+
+    //------------------With Extensions
+    namespace extension_test
+    {
+        static class GenericExtensions
+        {
+            //Extension Type
+            public static void PrintComponent<Y>(this object obj)
+            {
+                Y sample = (Y)obj;
+                Console.WriteLine(sample.GetType().GetMethod("GetResults").Invoke(sample, null));
+            }
+            
         }
     }
 }
