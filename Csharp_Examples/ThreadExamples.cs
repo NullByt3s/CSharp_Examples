@@ -32,10 +32,19 @@ namespace Csharp_Examples
             //Task.Factory.StartNew(MyTypeOfThead, TaskCreationOptions.LongRunning).Wait();
 
 
-            Console.WriteLine("End of Thread tests.");
-            Console.ReadLine();
-        }
+            //Using lambdas as our action for adding parameters, 
+            //                              Compiler creates closure for us
+            Task.Factory.StartNew(() => SaySomething("Hello World.")).Wait();
 
+            Task<int> t = Task.Run(() => Add(60, 39));
+            //Task<int> t = Task.Run(() => { return 60 + 39;});
+
+            //Get the result from the thread
+            Console.WriteLine("The result of my adding function : " + t.Result); //This will force main thread to wait.
+
+            Console.WriteLine("End of Thread tests.");
+
+        }
 
         private static void Speak()
         {
@@ -43,10 +52,21 @@ namespace Csharp_Examples
             MyTypeOfThead();
         }
 
+        private static void SaySomething(string something)
+        {
+            Console.WriteLine(something);
+        }
+
         private static void MyTypeOfThead()
         {
             Console.WriteLine("I'm a {0} thread", Thread.CurrentThread.IsThreadPoolThread? "Thread pool":"Custom");
             Console.WriteLine(Thread.CurrentThread.Priority);
+        }
+
+
+        private static int Add(int x, int y)
+        {
+            return x + y;
         }
     }
 }

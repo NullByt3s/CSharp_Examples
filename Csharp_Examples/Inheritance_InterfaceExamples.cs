@@ -33,7 +33,7 @@ namespace Csharp_Examples
         }
 
         //----------------Base Class----------------
-        public class Ability
+        private class Ability
         {
             //Protected so derived classes can access
             protected string _name = "No Name";
@@ -50,7 +50,7 @@ namespace Csharp_Examples
 
 
         //----------------Using Inheritance----------------
-        public class Open : Ability
+        private class Open : Ability
         {
             public Open(string name)
             {
@@ -71,7 +71,7 @@ namespace Csharp_Examples
 
 
         //----------------Using Interfaces----------------
-        public interface Castable
+        private interface Castable
         {
             //Mandatory Function prototype
             //All classes using it must have this inside the class.
@@ -80,7 +80,7 @@ namespace Csharp_Examples
 
 
         //Looks exactly like inheritance
-        public class Fireball : Castable
+        private class Fireball : Castable
         {
             public Action<float> MyAction { get; private set; }
             float damage;
@@ -108,7 +108,7 @@ namespace Csharp_Examples
         //Classes Can only Inherit from only 1 class
         //But Classes can have many interfaces.
 
-        public class Ultimate
+        private class Ultimate
         {
             protected int cooldown;
 
@@ -133,14 +133,14 @@ namespace Csharp_Examples
 
 
         //Chaing Ultimate to an interface
-        public interface UltimateV2
+        private interface UltimateV2
         {
             void SetCooldown(int seconds);
         }
 
 
         //Combining everything together
-        public class SuperAbility : Ability, UltimateV2, Castable
+        private class SuperAbility : Ability, UltimateV2, Castable
         {
             int cooldown = int.MaxValue;
             Action<int> ultimateAction;

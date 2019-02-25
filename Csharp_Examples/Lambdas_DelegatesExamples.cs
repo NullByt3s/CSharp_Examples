@@ -60,6 +60,13 @@ namespace Csharp_Examples
             //Binding up a method with some data and passing it around
             // == the definition of a class.
 
+            Call = GetCallersV2();
+            Console.WriteLine(Call("Carlos"));
+
+            Console.WriteLine(Call("Andy"));
+
+            Console.WriteLine(Call("Jill"));
+
             Console.WriteLine("End of Lambdas/Delegates");
         }
 
@@ -85,7 +92,6 @@ namespace Csharp_Examples
         public static Func<string, string> GetCallersV2()
         {
             string CurrentCallers = "Callers: ";
-
             //Same as above only shorter with lambdas
             return caller => CurrentCallers += caller;
         }
