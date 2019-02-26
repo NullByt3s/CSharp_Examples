@@ -16,7 +16,10 @@ namespace Csharp_Examples
             //GenericsExamples.RunTests();
 
             //ThreadExamples.RunTests();
-            ThreadExamples_2.RunTests();
+            //ThreadExamples_2.RunTests();
+            //ThreadExamples_3.RunTests();
+
+            EventsExamples.RunTests();
         }
     }
 }
